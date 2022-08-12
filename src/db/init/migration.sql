@@ -1,0 +1,213 @@
+
+
+CREATE TABLE IF NOT EXISTS sizes
+    (
+        size_id INT NOT NULL AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        PRIMARY KEY(size_id)
+    );
+
+CREATE TABLE IF NOT EXISTS colors
+    (
+        color_id INT NOT NULL AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        PRIMARY KEY(color_id)
+    );
+
+CREATE TABLE IF NOT EXISTS manufactures
+    (
+        manufacture_id INT NOT NULL AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        PRIMARY KEY(manufacture_id)
+    );
+
+CREATE TABLE IF NOT EXISTS categories
+    (
+        category_id INT NOT NULL AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        PRIMARY KEY(category_id)
+    );
+
+CREATE TABLE IF NOT EXISTS countries
+    (
+        country_id INT NOT NULL AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        PRIMARY KEY(country_id)
+    );
+
+CREATE TABLE IF NOT EXISTS brands 
+    (
+        brand_id INT NOT NULL AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        PRIMARY KEY(brand_id)
+    );
+
+CREATE TABLE IF NOT EXISTS types
+    (
+        type_id INT NOT NULL AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        PRIMARY KEY(type_id)
+    );
+
+
+
+CREATE TABLE IF NOT EXISTS images
+    (
+        image_id INT NOT NULL AUTO_INCREMENT,
+        url  VARCHAR(255) NOT NULL,
+        PRIMARY KEY(image_id)
+    );
+
+CREATE TABLE IF NOT EXISTS products
+    (
+        product_id INT NOT NULL AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        price INT NOT NULL,
+        rate FLOAT NOT NULL,
+        quantity INT NOT NULL,
+        brand_id INT NOT NULL,
+        manufacture_id INT NOT NULL,
+        PRIMARY KEY(product_id),
+        FOREIGN KEY(brand_id) REFERENCES brands(brand_id),
+        FOREIGN KEY(manufacture_id) REFERENCES manufactures(manufacture_id)
+    );
+
+CREATE TABLE IF NOT EXISTS users
+    (
+        user_id INT NOT NULL AUTO_INCREMENT,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        user_password VARCHAR(255) NOT NULL,
+        PRIMARY KEY(user_id)
+    );
+
+CREATE TABLE IF NOT EXISTS reviews
+    (
+        review_id INT NOT NULL AUTO_INCREMENT,
+        user_id INT NOT NULL,
+        product_id INT NOT NULL,
+        PRIMARY KEY(review_id),
+        FOREIGN KEY(user_id) REFERENCES users(user_id),
+        FOREIGN KEY(product_id) REFERENCES products(product_id) 
+    );
+
+CREATE TABLE IF NOT EXISTS addresses
+    (
+        address_id INT NOT NULL,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        country_id INT NOT NULL,
+        address_1 VARCHAR(255) NOT NULL,
+        address_2 VARCHAR(255) NOT NULL,
+        city VARCHAR(255) NOT NULL,
+        zip_code VARCHAR(255) NOT NULL,
+        mobile_phone VARCHAR(255) NOT NULL,
+        additional_mobile_phone VARCHAR(255) NOT NULL,
+        user_id INT NOT NULL,
+        PRIMARY KEY(address_id),
+        FOREIGN KEY(country_id) REFERENCES countries(country_id),
+        FOREIGN KEY(user_id) REFERENCES users(user_id)
+    );
+
+CREATE TABLE IF NOT EXISTS bags
+    (
+        bag_id INT NOT NULL AUTO_INCREMENT,
+        user_id INT NOT NULL,
+        PRIMARY KEY(bag_id),
+        FOREIGN KEY(user_id) REFERENCES users(user_id)
+    );
+
+CREATE TABLE IF NOT EXISTS sales
+    (
+        sale_id INT NOT NULL AUTO_INCREMENT,
+        product_id INT NOT NULL,
+        PRIMARY KEY(sale_id),
+        FOREIGN KEY(product_id) REFERENCES products(product_id)
+    );
+
+CREATE TABLE IF NOT EXISTS overviews 
+    (
+        overviews INT NOT NULL AUTO_INCREMENT,
+        content VARCHAR(255) NOT NULL,
+        product_id INT NOT NULL,
+        PRIMARY KEY(overviews),
+        FOREIGN KEY(product_id) REFERENCES products(product_id)
+    );
+
+
+    
+CREATE TABLE IF NOT EXISTS bag_product_relations
+    (
+        bag_id INT NOT NULL,
+        product_id INT NOT NULL,
+        FOREIGN KEY(product_id) REFERENCES products(product_id),
+        FOREIGN KEY(bag_id) REFERENCES bags(bag_id)
+    );
+
+CREATE TABLE IF NOT EXISTS product_size_relations
+    (
+        size_id INT NOT NULL,
+        product_id INT NOT NULL,
+        FOREIGN KEY(size_id) REFERENCES sizes(size_id),
+        FOREIGN KEY(product_id) REFERENCES products(product_id)
+    );
+
+CREATE TABLE IF NOT EXISTS product_color_relations
+    (
+        color_id INT NOT NULL,
+        product_id INT NOT NULL,
+        FOREIGN KEY(color_id) REFERENCES colors(color_id),
+        FOREIGN KEY(product_id) REFERENCES products(product_id)
+    );
+
+CREATE TABLE IF NOT EXISTS product_manufacture_relations
+    (
+        manufacture_id INT NOT NULL,
+        product_id INT NOT NULL,
+        FOREIGN KEY(manufacture_id) REFERENCES manufactures(manufacture_id),
+        FOREIGN KEY(product_id) REFERENCES products(product_id)
+    );
+
+CREATE TABLE IF NOT EXISTS product_category_relations
+    (
+        category_id INT NOT NULL,
+        product_id INT NOT NULL,
+        FOREIGN KEY(category_id) REFERENCES categories(category_id),
+        FOREIGN KEY(product_id) REFERENCES products(product_id)
+    );
+
+CREATE TABLE IF NOT EXISTS product_country_relations
+    (
+        country_id INT NOT NULL,
+        product_id INT NOT NULL,
+        FOREIGN KEY(country_id) REFERENCES countries(country_id),
+        FOREIGN KEY(product_id) REFERENCES products(product_id)
+    );
+
+
+CREATE TABLE IF NOT EXISTS product_type_relations
+    (
+        type_id INT NOT NULL,
+        product_id INT NOT NULL,
+        FOREIGN KEY(type_id) REFERENCES types(type_id),
+        FOREIGN KEY(product_id) REFERENCES products(product_id)
+    );
+
+CREATE TABLE IF NOT EXISTS product_brand_relations
+    (
+        brand_id INT NOT NULL,
+        product_id INT NOT NULL,
+        FOREIGN KEY(brand_id) REFERENCES brands(brand_id),
+        FOREIGN KEY(product_id) REFERENCES products(product_id)
+    );
+
+CREATE TABLE IF NOT EXISTS product_image_relations
+    (
+        image_id INT NOT NULL,
+        product_id INT NOT NULL,
+        FOREIGN KEY(image_id) REFERENCES images(image_id),
+        FOREIGN KEY(product_id) REFERENCES products(product_id)
+    );
+
