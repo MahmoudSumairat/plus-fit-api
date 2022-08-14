@@ -1,11 +1,14 @@
 const cookieParser = require("cookie-parser");
 const { json } = require("express");
 const express = require("express");
+const jsonException = require("./middleware/jsonException");
 const router = require("./routes");
 const app = express();
 const PORT = process.env.PORT;
 
 app.use(json());
+
+app.use(jsonException);
 
 app.use(cookieParser());
 

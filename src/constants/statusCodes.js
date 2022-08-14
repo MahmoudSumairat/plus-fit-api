@@ -4,3 +4,4 @@ exports.NOT_FOUND = 404;
 exports.CONFLICT = 409;
 exports.UNAUTHORIZED = 403;
 exports.VALIDATION_ERROR = 422;
+exports.BAD_REQUEST = 400;

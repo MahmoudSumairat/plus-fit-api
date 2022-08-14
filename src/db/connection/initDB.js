@@ -9,13 +9,6 @@ pool.getConnection((err) => {
     return console.log("Error connecting to DB", err);
   }
   console.log("DB connection established.");
-  pool.query(Schema.useDB, (err, result) => {
-    if (err) {
-      return console.log("Error using DB");
-    }
-
-    return console.log("DB Used successfully");
-  });
 });
 
 const migrationQuery = fs.readFileSync(
@@ -25,10 +18,17 @@ const migrationQuery = fs.readFileSync(
   }
 );
 
-db.query(` ${Schema.createDB} ${migrationQuery}`, (err) => {
+const seedQuery = fs.readFileSync(
+  require("path").resolve(__dirname, "../init/seeds.sql"),
+  {
+    encoding: "utf-8",
+  }
+);
+
+pool.query(` ${Schema.createDB} ${migrationQuery} ${seedQuery}`, (err) => {
   if (err) {
     return console.log("DB migration field", err);
   }
 
-  console.log("DB migration succeeded.");
+  console.log("DB migration and Seeding succeeded.");
 });
