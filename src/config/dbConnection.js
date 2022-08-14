@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const dbConnectionConfig = {
+const dbInitConnectionConfig = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -8,4 +8,11 @@ const dbConnectionConfig = {
   multipleStatements: true,
 };
 
-module.exports = dbConnectionConfig;
+const dbConnectionConfig = {
+  ...dbInitConnectionConfig,
+  database: process.env.DB_NAME,
+};
+
+exports.dbInitConnectionConfig = dbInitConnectionConfig;
+
+exports.dbConnectionConfig = dbConnectionConfig;

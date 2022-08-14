@@ -1,6 +1,6 @@
 const mySql = require("mysql");
-const dbConnectionConfig = require("../../config/dbConnection");
-
+const { dbConnectionConfig } = require("../../config/dbConnection");
+const Schema = require("../models/Schema");
 const pool = mySql.createPool(dbConnectionConfig);
 
 pool.getConnection((err) => {
