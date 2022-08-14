@@ -14,6 +14,17 @@ const Product = {
       );
     });
   },
+
+  getProducts: (limit, offset) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+        SELECT * FROM products WHERE product_id > 0 LIMIT ${limit}  OFFSET ${offset}
+        `,
+        (err, result) => queryHandler(err, result, resolve, reject)
+      );
+    });
+  },
 };
 
 module.exports = Product;

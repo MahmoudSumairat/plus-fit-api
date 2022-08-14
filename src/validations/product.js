@@ -1,62 +1,62 @@
-const { check } = require("express-validator");
+const { body, query } = require("express-validator");
 
 const productValidation = {
   addProduct: [
-    check("title")
+    body("title")
       .not()
       .isEmpty()
       .withMessage("Title is required")
       .isLength({ min: 3 })
       .withMessage("Product should be at least 3 characters long"),
-    check("price")
+    body("price")
       .not()
       .isEmpty()
       .withMessage("Price is required")
       .isInt({ min: 1 })
       .withMessage("Price should be at least 1 USD"),
-    check("rate")
+    body("rate")
       .not()
       .isEmpty()
       .withMessage("Rate is required")
       .isInt({ min: 1 })
       .withMessage("Rate should be at least 1 star"),
-    check("quantity")
+    body("quantity")
       .not()
       .isEmpty()
       .withMessage("Quantity is required")
       .isInt({ min: 1 })
       .withMessage("Quantity should be at least 1 stock"),
-    check("brandId")
+    body("brandId")
       .not()
       .isEmpty()
       .withMessage("Brand ID is required")
       .isInt({ min: 1 })
       .withMessage("Brand with ID 0  doesn't exist"),
-    check("manufactureId")
+    body("manufactureId")
       .not()
       .isEmpty()
       .withMessage("Manufacture ID is required")
       .isInt({ min: 1 })
       .withMessage("Manufacture with ID 0  doesn't exist"),
-    check("countryId")
+    body("countryId")
       .not()
       .isEmpty()
       .withMessage("Country ID is required")
       .isInt({ min: 1 })
       .withMessage("Country with ID 0  doesn't exist"),
-    check("typeId")
+    body("typeId")
       .not()
       .isEmpty()
       .withMessage("Type ID is required")
       .isInt({ min: 1 })
       .withMessage("Type with ID 0  doesn't exist"),
-    check("categoryId")
+    body("categoryId")
       .not()
       .isEmpty()
       .withMessage("Category ID is required")
       .isInt({ min: 1 })
       .withMessage("Category with ID 0  doesn't exist"),
-    check("colorIds")
+    body("colorIds")
       .not()
       .isEmpty()
       .withMessage("Colors are required")
@@ -64,7 +64,7 @@ const productValidation = {
       .withMessage("Color IDs should be an array")
       .isLength({ min: 1 })
       .withMessage("Color IDs should not be empty"),
-    check("sizeIds")
+    body("sizeIds")
       .not()
       .isEmpty()
       .withMessage("Sizes are required")
@@ -72,6 +72,21 @@ const productValidation = {
       .withMessage("Size IDs should be an array")
       .isLength({ min: 1 })
       .withMessage("Size IDs should not be empty"),
+  ],
+
+  getProducts: [
+    query("pageNumber")
+      .not()
+      .isEmpty()
+      .withMessage("Page Size is required")
+      .isInt({ min: 1 })
+      .withMessage("There is not page 0"),
+    query("pageSize")
+      .not()
+      .isEmpty()
+      .withMessage("Page Size is required")
+      .isInt({ min: 1 })
+      .withMessage("Can't get 0 products of the page"),
   ],
 };
 

@@ -1,6 +1,8 @@
 const Color = require("./Color");
 const Size = require("./Size");
 const productDB = require("../db/models/Product");
+const { VALIDATION_ERROR } = require("../constants/statusCodes");
+const { NO_LIMIT_OFFSET } = require("../constants/responseMessages");
 class Product {
   productData = {
     title: "",
@@ -19,6 +21,22 @@ class Product {
       this.productData = { ...data };
     }
   }
+
+  static getAllProducts = async (limit, offset) => {
+    if (!limit || !offset) {
+      return Promise.reject({
+        status: VALIDATION_ERROR,
+        message: NO_LIMIT_OFFSET,
+      });
+    }
+
+    try {
+      const result = await productDB.getProducts(limit, offset);
+      return Promise.resolve(result);
+    } catch (err) {
+      throw err;
+    }
+  };
 
   addProduct = async () => {
     try {

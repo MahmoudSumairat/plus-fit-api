@@ -6,6 +6,9 @@ const responseMessages = {
   VALIDATION_FAILED: "Request has invalid data.",
   EMPTY_IDS: "ids array should be defined and not empty.",
   NO_PRODUCT_ID: "product ID should be provided",
+  NO_LIMIT_OFFSET: "limit and offset should be provided.",
+  PRODUCT_FETCH_SUCCESS: "products fetched successfully.",
+  PRODUCT_ADD_SUCCESS: "product added successfully.",
 };
 
 module.exports = responseMessages;
