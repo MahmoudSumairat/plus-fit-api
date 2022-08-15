@@ -6,9 +6,9 @@ const Color = {
     return new Promise((resolve, reject) => {
       db.query(
         `
-        INSERT INTO product_color_relations (color_id, product_id) VALUES (?)
+        INSERT INTO product_color_relations (color_id, product_id) VALUES ?
         `,
-        rows,
+        [rows],
         (err, result) => queryHandler(err, result, resolve, reject)
       );
     });

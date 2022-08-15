@@ -19,7 +19,18 @@ const Product = {
     return new Promise((resolve, reject) => {
       db.query(
         `
-        SELECT * FROM products WHERE product_id > 0 LIMIT ${limit}  OFFSET ${offset}
+        SELECT product_id, title, price, rate, quantity FROM products WHERE product_id > 0 LIMIT ${limit}  OFFSET ${offset}
+        `,
+        (err, result) => queryHandler(err, result, resolve, reject)
+      );
+    });
+  },
+
+  getProductDetails: (productId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+          SELECT * FROM products WHERE product_id=${productId};
         `,
         (err, result) => queryHandler(err, result, resolve, reject)
       );

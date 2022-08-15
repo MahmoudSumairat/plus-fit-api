@@ -6,9 +6,9 @@ const Size = {
     return new Promise((resolve, reject) => {
       db.query(
         `
-        INSERT INTO product_size_relations (size_id, product_id) VALUES (?)
+        INSERT INTO product_size_relations (size_id, product_id) VALUES ?
         `,
-        rows,
+        [rows],
         (err, result) => queryHandler(err, result, resolve, reject)
       );
     });

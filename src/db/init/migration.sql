@@ -40,12 +40,6 @@ CREATE TABLE IF NOT EXISTS types (
     PRIMARY KEY(type_id)
 );
 
-CREATE TABLE IF NOT EXISTS images (
-    image_id INT NOT NULL AUTO_INCREMENT,
-    url VARCHAR(255) NOT NULL,
-    PRIMARY KEY(image_id)
-);
-
 CREATE TABLE IF NOT EXISTS products (
     product_id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
@@ -63,6 +57,15 @@ CREATE TABLE IF NOT EXISTS products (
     FOREIGN KEY(country_id) REFERENCES countries(country_id),
     FOREIGN KEY(type_id) REFERENCES types(type_id),
     FOREIGN KEY(category_id) REFERENCES categories(category_id)
+);
+
+CREATE TABLE IF NOT EXISTS images (
+    image_id INT NOT NULL AUTO_INCREMENT,
+    url VARCHAR(255) NOT NULL,
+    product_id INT NOT NULL,
+    is_main_img BOOLEAN,
+    PRIMARY KEY(image_id),
+    FOREIGN KEY(product_id) REFERENCES products(product_id)
 );
 
 CREATE TABLE IF NOT EXISTS users (
@@ -141,12 +144,5 @@ CREATE TABLE IF NOT EXISTS product_color_relations (
     color_id INT NOT NULL,
     product_id INT NOT NULL,
     FOREIGN KEY(color_id) REFERENCES colors(color_id),
-    FOREIGN KEY(product_id) REFERENCES products(product_id)
-);
-
-CREATE TABLE IF NOT EXISTS product_image_relations (
-    image_id INT NOT NULL,
-    product_id INT NOT NULL,
-    FOREIGN KEY(image_id) REFERENCES images(image_id),
     FOREIGN KEY(product_id) REFERENCES products(product_id)
 );

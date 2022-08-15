@@ -5,6 +5,9 @@ const jsonException = require("./middleware/jsonException");
 const router = require("./routes");
 const app = express();
 const PORT = process.env.PORT;
+const fileupload = require("express-fileupload");
+
+app.use(fileupload());
 
 app.use(json());
 

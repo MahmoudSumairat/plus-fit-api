@@ -1,4 +1,4 @@
-const { body, query } = require("express-validator");
+const { body, query, param } = require("express-validator");
 
 const productValidation = {
   addProduct: [
@@ -87,6 +87,15 @@ const productValidation = {
       .withMessage("Page Size is required")
       .isInt({ min: 1 })
       .withMessage("Can't get 0 products of the page"),
+  ],
+
+  getProductDetails: [
+    param("productId")
+      .not()
+      .isEmpty()
+      .withMessage("Product ID is required")
+      .isInt({ min: 1 })
+      .withMessage("Product ID should be greater than 0"),
   ],
 };
 

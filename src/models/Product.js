@@ -1,8 +1,9 @@
 const Color = require("./Color");
 const Size = require("./Size");
 const productDB = require("../db/models/Product");
-const { VALIDATION_ERROR } = require("../constants/statusCodes");
-const { NO_LIMIT_OFFSET } = require("../constants/responseMessages");
+const imageDB = require("../db/models/Image");
+const productService = require("../services/product");
+
 class Product {
   productData = {
     title: "",
@@ -23,16 +24,38 @@ class Product {
   }
 
   static getAllProducts = async (limit, offset) => {
-    if (!limit || !offset) {
-      return Promise.reject({
-        status: VALIDATION_ERROR,
-        message: NO_LIMIT_OFFSET,
-      });
-    }
-
     try {
       const result = await productDB.getProducts(limit, offset);
       return Promise.resolve(result);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getProductDetails = async (productId) => {
+    try {
+      const result = await productDB.getProductDetails(productId);
+      const productImages = await imageDB.getProductImages(productId);
+      return Promise.resolve({ ...result[0], images: productImages });
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static addProductImages = async (images, productId, mainImgIndex) => {
+    try {
+      const downloadURLs = await productService.uploadProductImages(images);
+      const imgRows = downloadURLs.map((url, index) => [
+        url,
+        +productId,
+        mainImgIndex == index,
+      ]);
+      await imageDB.addProductImages(imgRows);
+      const addedImages = downloadURLs.map((url, index) => ({
+        url,
+        isMainImg: mainImgIndex == index,
+      }));
+      return Promise.resolve(addedImages);
     } catch (err) {
       throw err;
     }
