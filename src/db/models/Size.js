@@ -13,6 +13,29 @@ const Size = {
       );
     });
   },
+
+  getProductSizes: (productId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+        SELECT * FROM product_size_relations WHERE product_id = ${productId}
+      `,
+        (err, res) => queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
+
+  getSizesFromRelation: (colorIds) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+        SELECT * FROM sizes WHERE size_id in (?)
+      `,
+        [colorIds],
+        (err, result) => queryHandler(err, result, resolve, reject)
+      );
+    });
+  },
 };
 
 module.exports = Size;

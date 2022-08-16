@@ -13,6 +13,29 @@ const Color = {
       );
     });
   },
+
+  getProductColors: (productId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+        SELECT * FROM product_color_relations WHERE product_id = ${productId}
+      `,
+        (err, res) => queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
+
+  getColorsFromRelation: (colorIds) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+        SELECT * FROM colors WHERE color_id in (?)
+      `,
+        [colorIds],
+        (err, result) => queryHandler(err, result, resolve, reject)
+      );
+    });
+  },
 };
 
 module.exports = Color;

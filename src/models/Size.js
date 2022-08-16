@@ -20,6 +20,17 @@ class Size {
       throw err;
     }
   };
+
+  static getProductSizes = async (productId) => {
+    try {
+      const sizesResult = await sizeDB.getProductSizes(productId);
+      const sizeIds = sizesResult.map((size) => size.size_id);
+      const availableSizes = sizeDB.getSizesFromRelation(sizeIds);
+      return Promise.resolve(availableSizes);
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 module.exports = Size;

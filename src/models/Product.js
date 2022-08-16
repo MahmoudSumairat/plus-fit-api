@@ -2,6 +2,11 @@ const Color = require("./Color");
 const Size = require("./Size");
 const productDB = require("../db/models/Product");
 const imageDB = require("../db/models/Image");
+const brandDB = require("../db/models/Brand");
+const manufactureDB = require("../db/models/Manufacture");
+const countryDB = require("../db/models/Country");
+const typeDB = require("../db/models/Type");
+const categoryDB = require("../db/models/Category");
 const productService = require("../services/product");
 
 class Product {
@@ -35,8 +40,37 @@ class Product {
   static getProductDetails = async (productId) => {
     try {
       const result = await productDB.getProductDetails(productId);
-      const productImages = await imageDB.getProductImages(productId);
-      return Promise.resolve({ ...result[0], images: productImages });
+      const productDetails = result[0];
+      const {
+        brand_id,
+        manufacture_id,
+        country_id,
+        type_id,
+        category_id,
+        product_id,
+      } = productDetails;
+
+      const productImages = await this.getProductImages(productId);
+      const productBrand = await this.getProductBrand(brand_id);
+      const productManufacture = await this.getProductManufacture(
+        manufacture_id
+      );
+      const productCountry = await this.getProductCountry(country_id);
+      const productType = await this.getProductType(type_id);
+      const productCategory = await this.getProductCategory(category_id);
+      const productColors = await this.getProductColors(product_id);
+      const productSizes = await this.getProductSizes(product_id);
+      return Promise.resolve({
+        ...productDetails,
+        images: productImages,
+        brand: productBrand,
+        manufacture: productManufacture,
+        country: productCountry,
+        type: productType,
+        category: productCategory,
+        availableColors: productColors,
+        availableSizes: productSizes,
+      });
     } catch (err) {
       throw err;
     }
@@ -56,6 +90,82 @@ class Product {
         isMainImg: mainImgIndex == index,
       }));
       return Promise.resolve(addedImages);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getProductImages = async (productId) => {
+    try {
+      const productImages = await imageDB.getProductImages(productId);
+      return Promise.resolve(productImages);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getProductBrand = async (brandId) => {
+    try {
+      const productBrandRes = await brandDB.getBrandDetails(brandId);
+      return Promise.resolve(productBrandRes[0]);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getProductManufacture = async (manufactureId) => {
+    try {
+      const productManufactureRes = await manufactureDB.getManufactureDetails(
+        manufactureId
+      );
+      return Promise.resolve(productManufactureRes[0]);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getProductCountry = async (countryId) => {
+    try {
+      const productCountryRes = await countryDB.getCountryDetails(countryId);
+      return Promise.resolve(productCountryRes[0]);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getProductType = async (typeId) => {
+    try {
+      const productTypeRes = await typeDB.getTypeDetails(typeId);
+      return Promise.resolve(productTypeRes[0]);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getProductCategory = async (categoryId) => {
+    try {
+      const productCategoryRes = await categoryDB.getCategoryDetails(
+        categoryId
+      );
+      return Promise.resolve(productCategoryRes[0]);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getProductColors = async (productId) => {
+    try {
+      const productColorsRes = await Color.getProductColors(productId);
+      return Promise.resolve(productColorsRes);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getProductSizes = async (productId) => {
+    try {
+      const productSizeRes = await Size.getProductSizes(productId);
+      return Promise.resolve(productSizeRes);
     } catch (err) {
       throw err;
     }
