@@ -3,6 +3,7 @@ const {
   PRODUCTS_FETCH_SUCCESS,
   PRODUCT_DETAILS_FETCH_SUCCESS,
   PRODUCT_IMAGES_ADDED,
+  PRODUCT_UPDATE_SUCCESS,
 } = require("../constants/responseMessages");
 const handleResError = require("../helpers/errorHandler");
 const handleResSuccess = require("../helpers/successHandler");
@@ -51,6 +52,16 @@ exports.uploadProductImages = async ({ files, body }, res) => {
     );
 
     handleResSuccess(res, PRODUCT_IMAGES_ADDED, imgs);
+  } catch (err) {
+    handleResError(err, res);
+  }
+};
+
+exports.updateProduct = async ({ body }, res) => {
+  try {
+    const product = new Product(body);
+    const result = await product.updateProduct();
+    handleResSuccess(res, PRODUCT_UPDATE_SUCCESS, result);
   } catch (err) {
     handleResError(err, res);
   }

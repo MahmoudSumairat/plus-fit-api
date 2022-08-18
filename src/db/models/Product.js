@@ -36,6 +36,22 @@ const Product = {
       );
     });
   },
+
+  updateProduct: (updatedFields, productData) => {
+    console.log(updatedFields, productData);
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+
+        UPDATE products SET ${updatedFields}
+        WHERE product_id = ?
+      
+      `,
+        productData,
+        (err, result) => queryHandler(err, result, resolve, reject)
+      );
+    });
+  },
 };
 
 module.exports = Product;

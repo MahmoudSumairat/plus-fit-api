@@ -8,6 +8,8 @@ const countryDB = require("../db/models/Country");
 const typeDB = require("../db/models/Type");
 const categoryDB = require("../db/models/Category");
 const productService = require("../services/product");
+const getDBUpdateFields = require("../helpers/getDBUpdateFields");
+const getUpdateDataRow = require("../helpers/getUpdateDataRow");
 
 class Product {
   productData = {
@@ -222,6 +224,57 @@ class Product {
       throw err;
     }
   };
+
+  updateProduct = async () => {
+    try {
+      const {
+        title,
+        price,
+        rate,
+        quantity,
+        brandId,
+        manufactureId,
+        countryId,
+        typeId,
+        categoryId,
+        id,
+        colorIds,
+      } = this.productData;
+
+      const updateProductData = {
+        title: title,
+        price: price,
+        rate: rate,
+        quantity: quantity,
+        brand_id: brandId,
+        manufacture_id: manufactureId,
+        country_id: countryId,
+        type_id: typeId,
+        category_id: categoryId,
+      };
+      if (colorIds && colorIds.length) {
+        const result = await this.updateProductColors();
+      }
+      const updateDataRow = getUpdateDataRow(updateProductData, id);
+      const updateFields = getDBUpdateFields(updateProductData);
+      await productDB.updateProduct(updateFields, updateDataRow);
+      return Promise.resolve(this.productData);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  updateProductColors = async () => {
+    try {
+      const { colorIds, id } = this.productData;
+      const result = await Color.updateProductColors(colorIds, id);
+      return Promise.resolve(result);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  updateProductSizes = async () => {};
 }
 
 module.exports = Product;

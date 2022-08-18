@@ -4,6 +4,7 @@ const {
   getAllProducts,
   getProductDetails,
   uploadProductImages,
+  updateProduct,
 } = require("../controllers/products");
 const router = express.Router();
 const productValidation = require("../validations/product");
@@ -19,5 +20,7 @@ router.get(
   validationCheck,
   getProductDetails
 );
+
+router.put("/update", updateProduct);
 
 module.exports = router;

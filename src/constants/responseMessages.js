@@ -10,7 +10,8 @@ const responseMessages = {
   PRODUCTS_FETCH_SUCCESS: "products fetched successfully.",
   PRODUCT_ADD_SUCCESS: "product added successfully.",
   PRODUCT_DETAILS_FETCH_SUCCESS: "product fetched successfully.",
-  PRODUCT_IMAGES_ADDED: "product images added successfully",
+  PRODUCT_IMAGES_ADDED: "product images added successfully.",
+  PRODUCT_UPDATE_SUCCESS: "product updated successfully.",
 };
 
 module.exports = responseMessages;
