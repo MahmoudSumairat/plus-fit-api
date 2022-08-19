@@ -4,12 +4,12 @@ const Brand = require("./Brand");
 const Category = require("./Category");
 const productDB = require("../db/models/Product");
 const imageDB = require("../db/models/Image");
-const typeDB = require("../db/models/Type");
 const productService = require("../services/product");
 const getDBUpdateFields = require("../helpers/getDBUpdateFields");
 const getUpdateDataRow = require("../helpers/getUpdateDataRow");
 const Country = require("./Country");
 const Manufacture = require("./Manufacture");
+const Type = require("./Type");
 
 class Product {
   productData = {
@@ -138,8 +138,9 @@ class Product {
 
   static getProductType = async (typeId) => {
     try {
-      const productTypeRes = await typeDB.getTypeDetails(typeId);
-      return Promise.resolve(productTypeRes[0]);
+      const type = new Type({ id: typeId });
+      const productTypeDetails = await type.getTypeDetails();
+      return Promise.resolve(productTypeDetails);
     } catch (err) {
       throw err;
     }
