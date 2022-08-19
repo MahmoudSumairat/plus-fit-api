@@ -5,7 +5,9 @@ const {
   getAllManufactures,
   updateManufacture,
   deleteManufacture,
-} = require("../controllers/");
+} = require("../controllers/manufactures");
+const lookupsValidations = require("../validations/lookups");
+const validationCheck = require("../middleware/validationCheck");
 
 router.post("/", lookupsValidations.addLookup, validationCheck, addManufacture);
 router.get("/", getAllManufactures);

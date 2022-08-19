@@ -6,6 +6,8 @@ const {
   updateCategory,
   deleteCategory,
 } = require("../controllers/categories");
+const lookupsValidations = require("../validations/lookups");
+const validationCheck = require("../middleware/validationCheck");
 
 router.post("/", lookupsValidations.addLookup, validationCheck, addCategory);
 router.get("/", getAllCategories);

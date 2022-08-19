@@ -6,6 +6,8 @@ const {
   deleteBrand,
   updateBrand,
 } = require("../controllers/brands");
+const validationCheck = require("../middleware/validationCheck");
+const lookupsValidations = require("../validations/lookups");
 
 router.post("/", lookupsValidations.addLookup, validationCheck, addBrand);
 router.get("/", getAllBrands);

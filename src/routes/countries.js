@@ -6,6 +6,8 @@ const {
   deleteCountry,
   getAllCountries,
 } = require("../controllers/countries");
+const lookupsValidations = require("../validations/lookups");
+const validationCheck = require("../middleware/validationCheck");
 
 router.post("/", lookupsValidations.addLookup, validationCheck, addCountry);
 router.get("/", getAllCountries);
