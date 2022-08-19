@@ -38,7 +38,6 @@ const Product = {
   },
 
   updateProduct: (updatedFields, productData) => {
-    console.log(updatedFields, productData);
     return new Promise((resolve, reject) => {
       db.query(
         `

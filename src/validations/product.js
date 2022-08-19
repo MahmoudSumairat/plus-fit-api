@@ -97,6 +97,20 @@ const productValidation = {
       .isInt({ min: 1 })
       .withMessage("Product ID should be greater than 0"),
   ],
+
+  updateProduct: [
+    param("productId")
+      .not()
+      .isEmpty()
+      .withMessage("Product ID is required")
+      .isInt({ min: 1 })
+      .withMessage("Product ID should be greater than 0"),
+    body("productData")
+      .custom((value) => {
+        return Object.values(value).length;
+      })
+      .withMessage("Product Data should have at least a field to be updated"),
+  ],
 };
 
 module.exports = productValidation;

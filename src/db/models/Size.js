@@ -14,6 +14,19 @@ const Size = {
     });
   },
 
+  updateProductSizes: (newSizes, productId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+        DELETE FROM product_size_relations WHERE product_id = ${productId};
+        INSERT INTO product_size_relations (size_id, product_id) VALUES ?
+      `,
+        [newSizes],
+        (err, res) => queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
+
   getProductSizes: (productId) => {
     return new Promise((resolve, reject) => {
       db.query(

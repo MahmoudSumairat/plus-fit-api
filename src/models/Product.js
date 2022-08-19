@@ -239,6 +239,7 @@ class Product {
         categoryId,
         id,
         colorIds,
+        sizeIds,
       } = this.productData;
 
       const updateProductData = {
@@ -253,7 +254,10 @@ class Product {
         category_id: categoryId,
       };
       if (colorIds && colorIds.length) {
-        const result = await this.updateProductColors();
+        await this.updateProductColors();
+      }
+      if (sizeIds && sizeIds.length) {
+        await this.updateProductSizes();
       }
       const updateDataRow = getUpdateDataRow(updateProductData, id);
       const updateFields = getDBUpdateFields(updateProductData);
@@ -274,7 +278,15 @@ class Product {
     }
   };
 
-  updateProductSizes = async () => {};
+  updateProductSizes = async () => {
+    try {
+      const { sizeIds, id } = this.productData;
+      const result = await Size.updateProductSizes(sizeIds, id);
+      return Promise.resolve(result);
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 module.exports = Product;

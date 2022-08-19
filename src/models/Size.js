@@ -21,6 +21,16 @@ class Size {
     }
   };
 
+  static updateProductSizes = async (sizeIds, productId) => {
+    try {
+      const rows = sizeIds.map((id) => [id, productId]);
+      const sizesResult = await sizeDB.updateProductSizes(rows, productId);
+      return Promise.resolve(sizesResult);
+    } catch (err) {
+      throw err;
+    }
+  };
+
   static getProductSizes = async (productId) => {
     try {
       const sizesResult = await sizeDB.getProductSizes(productId);

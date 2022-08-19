@@ -57,9 +57,12 @@ exports.uploadProductImages = async ({ files, body }, res) => {
   }
 };
 
-exports.updateProduct = async ({ body }, res) => {
+exports.updateProduct = async (
+  { body: { productData }, params: { productId } },
+  res
+) => {
   try {
-    const product = new Product(body);
+    const product = new Product({ ...productData, id: +productId });
     const result = await product.updateProduct();
     handleResSuccess(res, PRODUCT_UPDATE_SUCCESS, result);
   } catch (err) {

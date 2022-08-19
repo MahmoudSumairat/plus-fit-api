@@ -21,6 +21,11 @@ router.get(
   getProductDetails
 );
 
-router.put("/update", updateProduct);
+router.put(
+  "/:productId",
+  productValidation.updateProduct,
+  validationCheck,
+  updateProduct
+);
 
 module.exports = router;
