@@ -1,3 +1,4 @@
+const { async } = require("@firebase/util");
 const colorDB = require("../db/models/Color");
 
 class Color {
@@ -36,6 +37,48 @@ class Color {
       const colorIds = colorsResult.map((color) => color.color_id);
       const availableColors = await colorDB.getColorsFromRelation(colorIds);
       return Promise.resolve(availableColors);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getAllColors = async () => {
+    try {
+      const colors = await colorDB.getAllColors();
+      return Promise.resolve(colors);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  addColor = async () => {
+    try {
+      const { title } = this.colorData;
+      const addDataRow = [title];
+      const { insertId } = await colorDB.addColor(addDataRow);
+      return Promise.resolve(insertId);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  updateColor = async () => {
+    try {
+      const { title, id } = this.colorData;
+      const updateDataRow = [title, id];
+      await colorDB.updateColor(updateDataRow);
+      return Promise.resolve(title);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  deleteColor = async () => {
+    try {
+      const { id } = this.colorData;
+      await colorDB.deleteColor(id);
+      console.log(id);
+      return Promise.resolve(id);
     } catch (err) {
       throw err;
     }

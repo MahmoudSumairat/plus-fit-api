@@ -11,6 +11,12 @@ const {
   updateCategory,
   deleteCategory,
 } = require("../controllers/categories");
+const {
+  addColor,
+  getAllColors,
+  updateColor,
+  deleteColor,
+} = require("../controllers/colors");
 const router = express.Router();
 const lookupsValidations = require("../validations/lookups");
 const validationCheck = require("../middleware/validationCheck");
@@ -50,6 +56,22 @@ router.delete(
   lookupsValidations.deleteLookup,
   validationCheck,
   deleteCategory
+);
+
+// COLORS
+router.post("/colors", lookupsValidations.addLookup, validationCheck, addColor);
+router.get("/colors", getAllColors);
+router.put(
+  "/colors/:id",
+  lookupsValidations.updateLookup,
+  validationCheck,
+  updateColor
+);
+router.delete(
+  "/colors/:id",
+  lookupsValidations.deleteLookup,
+  validationCheck,
+  deleteColor
 );
 
 module.exports = router;

@@ -1,6 +1,5 @@
 const queryHandler = require("../../helpers/queryHandler");
 const db = require("../connection/dbConnect");
-const mysql = require("mysql");
 
 const Color = {
   addProductColors: (rows) => {
@@ -47,6 +46,60 @@ const Color = {
       `,
         [colorIds],
         (err, result) => queryHandler(err, result, resolve, reject)
+      );
+    });
+  },
+
+  addColor: (colorData) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+        
+        INSERT INTO colors (title) VALUES (?)
+      
+      `,
+        colorData,
+        (err, res) => queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
+
+  getAllColors: () => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+
+        SELECT * FROM colors WHERE color_id > 0
+      
+      `,
+        (err, res) => queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
+
+  updateColor: (colorData) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+
+          UPDATE colors SET title = ? WHERE color_id = ?
+        
+        `,
+        colorData,
+        (err, res) => queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
+
+  deleteColor: (colorId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+      
+        DELETE FROM colors WHERE color_id = ${colorId}
+
+      `,
+        (err, res) => queryHandler(err, res, resolve, reject)
       );
     });
   },
