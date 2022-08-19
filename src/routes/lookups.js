@@ -17,9 +17,15 @@ const {
   updateColor,
   deleteColor,
 } = require("../controllers/colors");
+const {
+  addCountry,
+  updateCountry,
+  deleteCountry,
+} = require("../controllers/countries");
 const router = express.Router();
 const lookupsValidations = require("../validations/lookups");
 const validationCheck = require("../middleware/validationCheck");
+const { getAllCountries } = require("../models/Country");
 
 // BRANDS
 router.post("/brands", lookupsValidations.addLookup, validationCheck, addBrand);
@@ -72,6 +78,27 @@ router.delete(
   lookupsValidations.deleteLookup,
   validationCheck,
   deleteColor
+);
+
+//COUNTRIES
+router.post(
+  "/countries",
+  lookupsValidations.addLookup,
+  validationCheck,
+  addCountry
+);
+router.get("/countries", getAllCountries);
+router.put(
+  "/countries/:id",
+  lookupsValidations.updateLookup,
+  validationCheck,
+  updateCountry
+);
+router.delete(
+  "/countries/:id",
+  lookupsValidations.deleteLookup,
+  validationCheck,
+  deleteCountry
 );
 
 module.exports = router;

@@ -5,12 +5,11 @@ const Category = require("./Category");
 const productDB = require("../db/models/Product");
 const imageDB = require("../db/models/Image");
 const manufactureDB = require("../db/models/Manufacture");
-const countryDB = require("../db/models/Country");
 const typeDB = require("../db/models/Type");
-const categoryDB = require("../db/models/Category");
 const productService = require("../services/product");
 const getDBUpdateFields = require("../helpers/getDBUpdateFields");
 const getUpdateDataRow = require("../helpers/getUpdateDataRow");
+const Country = require("./Country");
 
 class Product {
   productData = {
@@ -130,8 +129,9 @@ class Product {
 
   static getProductCountry = async (countryId) => {
     try {
-      const productCountryRes = await countryDB.getCountryDetails(countryId);
-      return Promise.resolve(productCountryRes[0]);
+      const country = new Country({ id: countryId });
+      const productCountry = country.getCountryDetails();
+      return Promise.resolve(productCountry);
     } catch (err) {
       throw err;
     }
