@@ -1,5 +1,6 @@
 const Color = require("./Color");
 const Size = require("./Size");
+const Brand = require("./Brand");
 const productDB = require("../db/models/Product");
 const imageDB = require("../db/models/Image");
 const brandDB = require("../db/models/Brand");
@@ -108,8 +109,9 @@ class Product {
 
   static getProductBrand = async (brandId) => {
     try {
-      const productBrandRes = await brandDB.getBrandDetails(brandId);
-      return Promise.resolve(productBrandRes[0]);
+      const brand = new Brand({ id: brandId });
+      const productBrand = await brand.getBrandDetails();
+      return Promise.resolve(productBrand);
     } catch (err) {
       throw err;
     }

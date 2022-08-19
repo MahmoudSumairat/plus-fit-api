@@ -12,6 +12,10 @@ const responseMessages = {
   PRODUCT_DETAILS_FETCH_SUCCESS: "product fetched successfully.",
   PRODUCT_IMAGES_ADDED: "product images added successfully.",
   PRODUCT_UPDATE_SUCCESS: "product updated successfully.",
+  LOOKUP_DATA_ADDED: "lookup data added successfully.",
+  LOOKUP_DATA_UPDATE: "lookup data updated successfully.",
+  LOOKUP_DATA_DELETE: "lookup data deleted successfully",
+  LOOKUP_DATA_RETRIEVE: "lookup data retrieved successfully.",
 };
 
 module.exports = responseMessages;
