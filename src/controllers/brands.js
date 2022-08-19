@@ -8,15 +8,6 @@ const {
   LOOKUP_DATA_RETRIEVE,
 } = require("../constants/responseMessages");
 
-exports.getAllBrands = async (req, res) => {
-  try {
-    const result = await Brand.getAllBrands();
-    handleResSuccess(res, LOOKUP_DATA_RETRIEVE, result);
-  } catch (err) {
-    handleResError(err, res);
-  }
-};
-
 exports.addBrand = async ({ body }, res) => {
   try {
     const brand = new Brand(body);
@@ -27,9 +18,18 @@ exports.addBrand = async ({ body }, res) => {
   }
 };
 
-exports.updateBrand = async ({ body, params: { brandId } }, res) => {
+exports.getAllBrands = async (req, res) => {
   try {
-    const brand = new Brand({ ...body, id: brandId });
+    const result = await Brand.getAllBrands();
+    handleResSuccess(res, LOOKUP_DATA_RETRIEVE, result);
+  } catch (err) {
+    handleResError(err, res);
+  }
+};
+
+exports.updateBrand = async ({ body, params: { id } }, res) => {
+  try {
+    const brand = new Brand({ ...body, id });
     await brand.updateBrand();
     handleResSuccess(res, LOOKUP_DATA_UPDATE, body);
   } catch (err) {
@@ -37,11 +37,11 @@ exports.updateBrand = async ({ body, params: { brandId } }, res) => {
   }
 };
 
-exports.deleteBrand = async ({ params: { brandId } }, res) => {
+exports.deleteBrand = async ({ params: { id } }, res) => {
   try {
-    const brand = new Brand({ id: brandId });
+    const brand = new Brand({ id });
     await brand.deleteBrand();
-    handleResSuccess(res, LOOKUP_DATA_DELETE, brandId);
+    handleResSuccess(res, LOOKUP_DATA_DELETE, id);
   } catch (err) {
     handleResError(err, res);
   }

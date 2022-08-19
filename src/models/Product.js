@@ -1,9 +1,9 @@
 const Color = require("./Color");
 const Size = require("./Size");
 const Brand = require("./Brand");
+const Category = require("./Category");
 const productDB = require("../db/models/Product");
 const imageDB = require("../db/models/Image");
-const brandDB = require("../db/models/Brand");
 const manufactureDB = require("../db/models/Manufacture");
 const countryDB = require("../db/models/Country");
 const typeDB = require("../db/models/Type");
@@ -148,10 +148,9 @@ class Product {
 
   static getProductCategory = async (categoryId) => {
     try {
-      const productCategoryRes = await categoryDB.getCategoryDetails(
-        categoryId
-      );
-      return Promise.resolve(productCategoryRes[0]);
+      const category = new Category({ id: categoryId });
+      const categoryDetails = await category.getCategoryDetails();
+      return Promise.resolve(categoryDetails);
     } catch (err) {
       throw err;
     }
