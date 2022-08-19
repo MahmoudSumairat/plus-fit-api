@@ -1,5 +1,4 @@
 const queryHandler = require("../../helpers/queryHandler");
-
 const db = require("../connection/dbConnect.js");
 
 const Product = {
@@ -15,11 +14,19 @@ const Product = {
     });
   },
 
-  getProducts: (limit, offset) => {
+  getProducts: (limit, offset, productType) => {
     return new Promise((resolve, reject) => {
+      const productTypeCondition = productType
+        ? ` AND products.type_id = ${productType}`
+        : "";
       db.query(
         `
-        SELECT product_id, title, price, rate, quantity FROM products WHERE product_id > 0 LIMIT ${limit}  OFFSET ${offset}
+        SELECT products.product_id, products.title, products.price, products.rate, products.quantity, images.url as mainImgUrl FROM products
+        RIGHT JOIN images ON products.product_id = images.product_id 
+        WHERE products.product_id > 0
+        AND images.is_main_img = TRUE
+        ${productTypeCondition}
+        LIMIT ${limit}  OFFSET ${offset}
         `,
         (err, result) => queryHandler(err, result, resolve, reject)
       );

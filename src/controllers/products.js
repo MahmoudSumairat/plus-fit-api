@@ -21,10 +21,14 @@ exports.addProduct = async ({ body }, res) => {
   }
 };
 
-exports.getAllProducts = async ({ query }, res) => {
+exports.getAllProducts = async ({ query, params: { productType } }, res) => {
   try {
     const { pageSize: limit, pageNumber: offset } = query;
-    const products = await Product.getAllProducts(limit, offset);
+    const products = await Product.getAllProducts(
+      limit,
+      offset - 1,
+      productType
+    );
     handleResSuccess(res, PRODUCTS_FETCH_SUCCESS, products);
   } catch (err) {
     handleResError(err, res);

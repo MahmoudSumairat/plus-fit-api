@@ -30,9 +30,9 @@ class Product {
     }
   }
 
-  static getAllProducts = async (limit, offset) => {
+  static getAllProducts = async (limit, offset, productType) => {
     try {
-      const result = await productDB.getProducts(limit, offset);
+      const result = await productDB.getProducts(limit, offset, productType);
       return Promise.resolve(result);
     } catch (err) {
       throw err;

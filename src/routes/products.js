@@ -15,6 +15,12 @@ router.post("/images", uploadProductImages);
 
 router.get("/", productValidation.getProducts, validationCheck, getAllProducts);
 router.get(
+  "/:productType",
+  productValidation.getProducts,
+  validationCheck,
+  getAllProducts
+);
+router.get(
   "/:productId",
   productValidation.getProductDetails,
   validationCheck,
