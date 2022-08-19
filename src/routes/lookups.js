@@ -26,6 +26,12 @@ const router = express.Router();
 const lookupsValidations = require("../validations/lookups");
 const validationCheck = require("../middleware/validationCheck");
 const { getAllCountries } = require("../models/Country");
+const {
+  addManufacture,
+  getAllManufactures,
+  updateManufacture,
+  deleteManufacture,
+} = require("../controllers/manufactures");
 
 // BRANDS
 router.post("/brands", lookupsValidations.addLookup, validationCheck, addBrand);
@@ -80,7 +86,7 @@ router.delete(
   deleteColor
 );
 
-//COUNTRIES
+// COUNTRIES
 router.post(
   "/countries",
   lookupsValidations.addLookup,
@@ -101,4 +107,24 @@ router.delete(
   deleteCountry
 );
 
+// MANUFACTURES
+router.post(
+  "/manufactures",
+  lookupsValidations.addLookup,
+  validationCheck,
+  addManufacture
+);
+router.get("/manufactures", getAllManufactures);
+router.put(
+  "/manufactures/:id",
+  lookupsValidations.updateLookup,
+  validationCheck,
+  updateManufacture
+);
+router.delete(
+  "/manufacture/:id",
+  lookupsValidations.deleteLookup,
+  validationCheck,
+  deleteManufacture
+);
 module.exports = router;
