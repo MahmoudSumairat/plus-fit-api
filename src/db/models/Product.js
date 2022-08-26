@@ -14,18 +14,52 @@ const Product = {
     });
   },
 
-  getProducts: (limit, offset, productType) => {
+  getProducts: (
+    limit,
+    offset,
+    productType,
+    { colorId, sizeId, brandId, categoryId, minPrice, maxPrice }
+  ) => {
     return new Promise((resolve, reject) => {
       const productTypeCondition = productType
         ? ` AND products.type_id = ${productType}`
         : "";
+
+      const colorFilter = colorId
+        ? `RIGHT JOIN product_color_relations ON
+        products.product_id = product_color_relations.product_id
+        AND product_color_relations.color_id = ${colorId} `
+        : ``;
+
+      const sizeFilter = sizeId
+        ? `RIGHT JOIN product_size_relations ON 
+      products.product_id = product_size_relations.product_id
+      AND product_size_relations.size_id = ${sizeId}`
+        : ``;
+
+      const brandFilter = brandId ? `AND products.brand_id = ${brandId}` : ``;
+
+      const categoryFilter = categoryId
+        ? `AND products.category_id = ${categoryId}`
+        : ``;
+
+      const priceFilter =
+        minPrice && maxPrice
+          ? `AND products.price BETWEEN ${minPrice} AND ${maxPrice}`
+          : ``;
+
       db.query(
         `
         SELECT products.product_id, products.title, products.price, products.rate, products.quantity, images.url as mainImgUrl FROM products
         RIGHT JOIN images ON products.product_id = images.product_id 
+        ${colorFilter}
+        ${sizeFilter}
         WHERE products.product_id > 0
         AND images.is_main_img = TRUE
         ${productTypeCondition}
+        ${brandFilter}
+        ${categoryFilter}
+        ${priceFilter}
         LIMIT ${limit}  OFFSET ${offset}
         `,
         (err, result) => queryHandler(err, result, resolve, reject)
