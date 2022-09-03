@@ -5,3 +5,4 @@ exports.CONFLICT = 409;
 exports.UNAUTHORIZED = 403;
 exports.VALIDATION_ERROR = 422;
 exports.BAD_REQUEST = 400;
+exports.UNAUTHENTICATED = 401;

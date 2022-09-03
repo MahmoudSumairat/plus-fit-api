@@ -11,6 +11,7 @@ const {
   USER_EXISTS,
   EMAIL_PASSWORD_INCORRECT,
 } = require("../constants/responseMessages");
+const Bag = require("./Bag");
 
 class User {
   userData = {
@@ -44,8 +45,10 @@ class User {
         email,
         user_password: hashedPassword,
       };
-      const result = await UserDB.addUser(dbData);
-      return Promise.resolve(result.insertId);
+      const { insertId } = await UserDB.addUser(dbData);
+      const bag = new Bag({ userId: insertId });
+      await bag.createUserBag();
+      return Promise.resolve(insertId);
     } catch (err) {
       throw err;
     }
@@ -74,7 +77,7 @@ class User {
   validateLoggedUser = async () => {
     try {
       const result = await this.searchUserByEmail();
-
+      const bagId = await Bag.getUserBagId(result.user_id);
       if (!result) {
         return Promise.reject({
           status: NOT_FOUND,
@@ -88,7 +91,7 @@ class User {
           message: EMAIL_PASSWORD_INCORRECT,
         });
       }
-      const token = jwt.sign({ ...result }, JWT_SECRET_KEY, {
+      const token = jwt.sign({ ...result, bagId }, JWT_SECRET_KEY, {
         expiresIn: JWT_EXPIRE_DATE,
       });
       return Promise.resolve(token);

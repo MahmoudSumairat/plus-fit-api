@@ -13,8 +13,8 @@ exports.addProduct = async ({ body }, res) => {
   try {
     const product = new Product(body);
     const insertedId = await product.addProduct();
-    const uploadImgsRes = await product.addProductImages();
-    console.log(uploadImgsRes);
+    // const uploadImgsRes = await product.addProductImages();
+    // console.log(uploadImgsRes);
     handleResSuccess(res, PRODUCT_ADD_SUCCESS, { ...body, id: insertedId });
   } catch (err) {
     handleResError(err, res);

@@ -16,6 +16,10 @@ const responseMessages = {
   LOOKUP_DATA_UPDATE: "lookup data updated successfully.",
   LOOKUP_DATA_DELETE: "lookup data deleted successfully",
   LOOKUP_DATA_RETRIEVE: "lookup data retrieved successfully.",
+  BAG_ITEM_FETCH_SUCCESS: "bag items fetched successfully",
+  BAG_ITEM_ADD_SUCCESS: "bag item added successfully.",
+  BAG_ITEM_UPDATE: "bag item updated successfully.",
+  BAG_ITEM_DELETE: "bag item deleted successfully.",
 };
 
 module.exports = responseMessages;

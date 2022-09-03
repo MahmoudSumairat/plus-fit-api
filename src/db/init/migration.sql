@@ -126,9 +126,15 @@ CREATE TABLE IF NOT EXISTS overviews (
     FOREIGN KEY(product_id) REFERENCES products(product_id)
 );
 
-CREATE TABLE IF NOT EXISTS bag_product_relations (
+CREATE TABLE IF NOT EXISTS bag_items (
+    bag_item_id INT NOT NULL AUTO_INCREMENT,
     bag_id INT NOT NULL,
     product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    size_id INT NOT NULL,
+    color_id INT NOT NULL,
+    price INT NOT NULL,
+    PRIMARY KEY(bag_item_id),
     FOREIGN KEY(product_id) REFERENCES products(product_id),
     FOREIGN KEY(bag_id) REFERENCES bags(bag_id)
 );
