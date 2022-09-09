@@ -87,13 +87,13 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 
 CREATE TABLE IF NOT EXISTS addresses (
-    address_id INT NOT NULL,
+    address_id INT NOT NULL AUTO_INCREMENT,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     country_id INT NOT NULL,
     address_1 VARCHAR(255) NOT NULL,
-    address_2 VARCHAR(255) NOT NULL,
+    address_2 VARCHAR(255),
     city VARCHAR(255) NOT NULL,
     zip_code VARCHAR(255) NOT NULL,
     mobile_phone VARCHAR(255) NOT NULL,

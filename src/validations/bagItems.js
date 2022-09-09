@@ -44,7 +44,9 @@ const bagItemsValidations = {
     body("updateField")
       .not()
       .isEmpty()
-      .withMessage("updateField should be provided"),
+      .withMessage("updateField should be provided")
+      .isString()
+      .withMessage("updateField should be string"),
     body("updateValue")
       .not()
       .isEmpty()
