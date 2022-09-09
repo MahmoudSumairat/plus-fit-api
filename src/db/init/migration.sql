@@ -115,6 +115,7 @@ CREATE TABLE IF NOT EXISTS bags (
 
 CREATE TABLE IF NOT EXISTS sales (
     sale_id INT NOT NULL AUTO_INCREMENT,
+    value INT NOT NULL,
     product_id INT NOT NULL,
     PRIMARY KEY(sale_id),
     FOREIGN KEY(product_id) REFERENCES products(product_id)

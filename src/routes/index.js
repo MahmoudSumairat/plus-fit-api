@@ -9,6 +9,7 @@ const bagItems = require("./bagItems");
 const addresses = require("./addresses");
 const overviews = require("./overviews");
 const reviews = require("./reviews");
+const sales = require("./sales");
 
 router.use("/auth", auth);
 router.use("/products", products);
@@ -17,4 +18,5 @@ router.use("/bagItems", bagItems);
 router.use("/addresses", addresses);
 router.use("/overviews", overviews);
 router.use("/reviews", reviews);
+router.use("/sales", sales);
 module.exports = router;
