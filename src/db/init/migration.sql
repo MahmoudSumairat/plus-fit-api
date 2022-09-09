@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS sales (
 );
 
 CREATE TABLE IF NOT EXISTS overviews (
-    overviews INT NOT NULL AUTO_INCREMENT,
+    overview_id INT NOT NULL AUTO_INCREMENT,
     content VARCHAR(255) NOT NULL,
     product_id INT NOT NULL,
     PRIMARY KEY(overviews),
