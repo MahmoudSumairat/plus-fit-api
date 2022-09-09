@@ -47,8 +47,8 @@ class User {
       };
       const { insertId } = await UserDB.addUser(dbData);
       const bag = new Bag({ userId: insertId });
-      await bag.createUserBag();
-      return Promise.resolve(insertId);
+      const { insertId: bagId } = await bag.createUserBag();
+      return Promise.resolve({ insertId, bagId });
     } catch (err) {
       throw err;
     }
@@ -77,13 +77,13 @@ class User {
   validateLoggedUser = async () => {
     try {
       const result = await this.searchUserByEmail();
-      const bagId = await Bag.getUserBagId(result.user_id);
       if (!result) {
         return Promise.reject({
           status: NOT_FOUND,
           message: EMAIL_PASSWORD_INCORRECT,
         });
       }
+      const bagId = await Bag.getUserBagId(result.user_id);
       const passwordsMatch = await this.comparePasswords(result.user_password);
       if (!passwordsMatch) {
         return Promise.reject({
@@ -109,9 +109,9 @@ class User {
           message: USER_EXISTS,
         });
       }
-      const insertId = await this.create();
+      const { insertId, bagId } = await this.create();
       const token = jwt.sign(
-        { ...this.userData, id: insertId },
+        { ...this.userData, id: insertId, bagId },
         JWT_SECRET_KEY,
         { expiresIn: JWT_EXPIRE_DATE }
       );

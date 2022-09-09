@@ -1,3 +1,4 @@
+const { format } = require("mysql");
 const queryHandler = require("../../helpers/queryHandler");
 const db = require("../connection/dbConnect");
 const BagItem = {
@@ -40,16 +41,16 @@ const BagItem = {
     });
   },
 
-  updateBagItem: (bagItemId, updateField, updateValue) => {
+  updateBagItem: (updateField, updateValue) => {
     return new Promise((resolve, reject) => {
       db.query(
         `
         
-            UPDATE bag_items SET ${updateField}  = ?
+            UPDATE bag_items SET ${updateField}
             WHERE bag_item_id = ?
         
         `,
-        [updateValue, bagItemId],
+        updateValue,
         (err, res) => queryHandler(err, res, resolve, reject)
       );
     });

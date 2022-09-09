@@ -22,7 +22,6 @@ exports.getBagItems = async (req, res) => {
 
 exports.addBagItem = async ({ body, headers }, res) => {
   try {
-    console.log("headers : ", headers);
     const {
       userData: { bagId },
     } = headers;
@@ -37,9 +36,13 @@ exports.addBagItem = async ({ body, headers }, res) => {
 exports.updateBagItem = async ({ body, params }, res) => {
   try {
     const { bagItemId } = params;
-    const { updateField, updateValue } = body;
+    const { updateField, updateValue, productId } = body;
     const bagItem = new BagItem({ id: bagItemId });
-    const updatedValue = await bagItem.updateBagItem(updateField, updateValue);
+    const updatedValue = await bagItem.updateBagItem(
+      updateField,
+      updateValue,
+      productId
+    );
     handleResSuccess(res, BAG_ITEM_UPDATE, updatedValue);
   } catch (err) {
     handleResError(err, res);

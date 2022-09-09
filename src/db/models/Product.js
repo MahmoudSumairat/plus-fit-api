@@ -67,11 +67,13 @@ const Product = {
     });
   },
 
-  getProductDetails: (productId) => {
+  getProductDetails: (productId, selectedColumns) => {
     return new Promise((resolve, reject) => {
       db.query(
         `
-          SELECT * FROM products WHERE product_id=${productId};
+          SELECT ${
+            selectedColumns || "*"
+          } FROM products WHERE product_id=${productId};
         `,
         (err, result) => queryHandler(err, result, resolve, reject)
       );
@@ -89,6 +91,34 @@ const Product = {
       `,
         productData,
         (err, result) => queryHandler(err, result, resolve, reject)
+      );
+    });
+  },
+
+  getProductQuantity: (productId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+      
+        SELECT quantity FROM products WHERE product_id = ?
+      
+      `,
+        [productId],
+        (err, res) => queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
+
+  selectFromProduct: (productId, selectedColumns) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+      
+        SELECT ${selectedColumns || "*"} FROM products WHERE product_id = ?
+      
+      `,
+        productId,
+        (err, res) => queryHandler(err, res, resolve, reject)
       );
     });
   },

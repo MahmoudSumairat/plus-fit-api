@@ -1,4 +1,6 @@
+const { VALIDATION_ERROR } = require("../constants/statusCodes");
 const bagItemDB = require("../db/models/BagItem");
+const Product = require("./Product");
 
 class BagItem {
   bagItemData = {
@@ -29,7 +31,26 @@ class BagItem {
     try {
       const { colorId, sizeId, quantity, price, bagId, productId } =
         this.bagItemData;
-      const addDataRow = [bagId, productId, quantity, sizeId, colorId, price];
+      const isQuantityValid = await this.isItemQuantityValid(
+        productId,
+        quantity
+      );
+
+      if (!isQuantityValid) {
+        return Promise.reject({
+          message: "Product Quantity is lower than Bag Item quantity",
+          status: VALIDATION_ERROR,
+        });
+      }
+      const calculatedPrice = price * quantity;
+      const addDataRow = [
+        bagId,
+        productId,
+        quantity,
+        sizeId,
+        colorId,
+        calculatedPrice,
+      ];
       const { insertId } = await bagItemDB.addBagItem(addDataRow);
       return Promise.resolve(insertId);
     } catch (err) {
@@ -47,7 +68,7 @@ class BagItem {
     }
   };
 
-  updateBagItem = async (updateField, updateValue) => {
+  updateBagItem = async (updateField, updateValue, productId) => {
     try {
       const updatedFieldsMap = {
         colorId: "color_id",
@@ -55,13 +76,34 @@ class BagItem {
         quantity: "quantity",
       };
       const { id } = this.bagItemData;
-      await bagItemDB.updateBagItem(
-        id,
-        updatedFieldsMap[updateField],
-        updateValue
-      );
+
+      let dbUpdateField = `${updatedFieldsMap[updateField]} = ?`;
+      let dbUpdateValue = [updateValue, id];
+      if (updateField === "quantity") {
+        if (!productId) {
+          return Promise.reject({
+            message: "Product ID should be provided with updated quantity",
+            status: VALIDATION_ERROR,
+          });
+        }
+        const { price } = await Product.selectFromProduct(productId, "price");
+        dbUpdateField += `, price = ?`;
+        dbUpdateValue = [updateValue, updateValue * price, id];
+      }
+      await bagItemDB.updateBagItem(dbUpdateField, dbUpdateValue);
       return Promise.resolve(updateValue);
-    } catch (err) {}
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  isItemQuantityValid = async (productId, bagItemQuantity) => {
+    try {
+      const productQuantity = await Product.getProductQuantity(productId);
+      return Promise.resolve(bagItemQuantity <= productQuantity);
+    } catch (err) {
+      throw err;
+    }
   };
 }
 

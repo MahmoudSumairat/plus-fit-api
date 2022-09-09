@@ -8,10 +8,10 @@ class Bag {
     }
   }
 
-  static getUserBagId = (userId) => {
+  static getUserBagId = async (userId) => {
     try {
-      const result = bagDB.getUserBagId(userId);
-      return Promise.resolve(result[0]);
+      const result = await bagDB.getUserBagId(userId);
+      return Promise.resolve(result[0].bag_id);
     } catch (err) {
       throw err;
     }

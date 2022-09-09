@@ -186,6 +186,27 @@ class Product {
     }
   };
 
+  static getProductQuantity = async (productId) => {
+    try {
+      const productQuantityRes = await productDB.getProductQuantity(productId);
+      return Promise.resolve(productQuantityRes[0].quantity);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static selectFromProduct = async (productId, selectedColumns) => {
+    try {
+      const productDetailsRes = await productDB.selectFromProduct(
+        productId,
+        selectedColumns
+      );
+      return Promise.resolve(productDetailsRes[0]);
+    } catch (err) {
+      throw err;
+    }
+  };
+
   addProduct = async () => {
     try {
       const {
