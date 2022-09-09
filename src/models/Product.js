@@ -16,7 +16,6 @@ class Product {
     title: "",
     price: 0,
     quantity: 0,
-    rate: 0,
     brandId: 0,
     manufactureId: 0,
     countryId: 0,
@@ -212,7 +211,6 @@ class Product {
       const {
         title,
         price,
-        rate,
         quantity,
         brandId,
         manufactureId,
@@ -225,7 +223,6 @@ class Product {
       const addedProductData = {
         title: title,
         price: price,
-        rate: rate,
         quantity: quantity,
         brand_id: brandId,
         manufacture_id: manufactureId,
@@ -264,7 +261,6 @@ class Product {
       const {
         title,
         price,
-        rate,
         quantity,
         brandId,
         manufactureId,
@@ -274,18 +270,21 @@ class Product {
         id,
         colorIds,
         sizeIds,
+        rate,
+        ratesCount,
       } = this.productData;
 
       const updateProductData = {
         title: title,
         price: price,
-        rate: rate,
         quantity: quantity,
         brand_id: brandId,
         manufacture_id: manufactureId,
         country_id: countryId,
         type_id: typeId,
         category_id: categoryId,
+        rate,
+        rates_count: ratesCount,
       };
       if (colorIds && colorIds.length) {
         await this.updateProductColors();

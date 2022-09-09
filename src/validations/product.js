@@ -14,12 +14,6 @@ const productValidation = {
       .withMessage("Price is required")
       .isInt({ min: 1 })
       .withMessage("Price should be at least 1 USD"),
-    body("rate")
-      .not()
-      .isEmpty()
-      .withMessage("Rate is required")
-      .isInt({ min: 1 })
-      .withMessage("Rate should be at least 1 star"),
     body("quantity")
       .not()
       .isEmpty()

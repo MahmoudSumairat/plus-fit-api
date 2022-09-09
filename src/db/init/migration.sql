@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS products (
     product_id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
     price INT NOT NULL,
-    rate FLOAT NOT NULL,
+    rate FLOAT NOT NULL DEFAULT 0,
+    rates_count INT NOT NULL DEFAULT 0,
     quantity INT NOT NULL,
     brand_id INT NOT NULL,
     manufacture_id INT NOT NULL,
@@ -81,6 +82,7 @@ CREATE TABLE IF NOT EXISTS reviews (
     review_id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     product_id INT NOT NULL,
+    content VARCHAR(255) NOT NULL,
     PRIMARY KEY(review_id),
     FOREIGN KEY(user_id) REFERENCES users(user_id),
     FOREIGN KEY(product_id) REFERENCES products(product_id)
