@@ -26,7 +26,6 @@ class Sale {
     try {
       const { value, productId } = this.saleData;
       const addDataRow = [value, productId];
-      console.log(addDataRow);
       const { insertId } = await saleDB.createSale(addDataRow);
       return Promise.resolve(insertId);
     } catch (err) {

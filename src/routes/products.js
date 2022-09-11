@@ -20,7 +20,7 @@ router.get(
 );
 router.get("/", productValidation.getProducts, validationCheck, getAllProducts);
 router.get(
-  "/:productType",
+  "/types/:categoryId",
   productValidation.getProducts,
   validationCheck,
   getAllProducts

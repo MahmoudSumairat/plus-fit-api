@@ -18,8 +18,8 @@ const Product = {
   getProducts: (
     limit,
     offset,
-    productType,
-    { colorId, sizeId, brandId, categoryId, minPrice, maxPrice }
+    categoryId,
+    { colorId, sizeId, brandId, productType, minPrice, maxPrice }
   ) => {
     return new Promise((resolve, reject) => {
       const productTypeCondition = productType
@@ -61,7 +61,10 @@ const Product = {
         ${brandFilter}
         ${categoryFilter}
         ${priceFilter}
-        LIMIT ${limit}  OFFSET ${offset}
+        LIMIT ${limit}  OFFSET ${offset};
+
+
+        SELECT COUNT(*) as totalElements FROM products
         `,
         (err, result) => queryHandler(err, result, resolve, reject)
       );
@@ -70,13 +73,6 @@ const Product = {
 
   getProductDetails: (productId, selectedColumns) => {
     return new Promise((resolve, reject) => {
-      console.log(
-        format(`
-      SELECT ${
-        selectedColumns || "*"
-      } FROM products WHERE product_id=${productId};
-    `)
-      );
       db.query(
         `
           SELECT ${
@@ -119,16 +115,6 @@ const Product = {
 
   selectFromProduct: (productId, selectedColumns) => {
     return new Promise((resolve, reject) => {
-      console.log(
-        format(
-          `
-      
-      SELECT ${selectedColumns || "*"} FROM products WHERE product_id = ?
-    
-    `,
-          productId
-        )
-      );
       db.query(
         `
       

@@ -4,7 +4,6 @@ const Sale = require("../models/Sale");
 
 exports.addSale = async ({ body }, res) => {
   try {
-    console.log(body);
     const sale = new Sale({ ...body });
     const insertedId = await sale.addSale();
     handleResSuccess(res, "sale added successfully", insertedId);

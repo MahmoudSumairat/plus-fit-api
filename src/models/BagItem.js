@@ -107,10 +107,7 @@ class BagItem {
             status: VALIDATION_ERROR,
           });
         }
-        const product = await Product.selectFromProduct(productId, "price");
-        console.log(product);
-        // dbUpdateField += `, price = ?`;
-        // dbUpdateValue = [updateValue, updateValue * price, id];
+        await Product.selectFromProduct(productId, "price");
       }
       await bagItemDB.updateBagItem(dbUpdateField, dbUpdateValue);
       return Promise.resolve(updateValue);

@@ -14,15 +14,13 @@ exports.addProduct = async ({ body }, res) => {
   try {
     const product = new Product(body);
     const insertedId = await product.addProduct();
-    // const uploadImgsRes = await product.addProductImages();
-    // console.log(uploadImgsRes);
     handleResSuccess(res, PRODUCT_ADD_SUCCESS, { ...body, id: insertedId });
   } catch (err) {
     handleResError(err, res);
   }
 };
 
-exports.getAllProducts = async ({ query, params: { productType } }, res) => {
+exports.getAllProducts = async ({ query, params: { categoryId } }, res) => {
   try {
     const {
       pageSize: limit,
@@ -30,15 +28,15 @@ exports.getAllProducts = async ({ query, params: { productType } }, res) => {
       colorId,
       sizeId,
       brandId,
-      categoryId,
       minPrice,
       maxPrice,
+      productType,
     } = query;
     const products = await Product.getAllProducts(
       limit,
-      offset - 1,
-      productType,
-      { colorId, sizeId, brandId, categoryId, minPrice, maxPrice }
+      (offset - 1) * limit,
+      categoryId,
+      { colorId, sizeId, brandId, productType, minPrice, maxPrice }
     );
     handleResSuccess(res, PRODUCTS_FETCH_SUCCESS, products);
   } catch (err) {

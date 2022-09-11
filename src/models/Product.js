@@ -35,19 +35,22 @@ class Product {
   static getAllProducts = async (
     limit,
     offset,
-    productType,
-    { colorId, sizeId, brandId, categoryId, minPrice, maxPrice }
+    categoryId,
+    { colorId, sizeId, brandId, productType, minPrice, maxPrice }
   ) => {
     try {
-      const result = await productDB.getProducts(limit, offset, productType, {
+      const result = await productDB.getProducts(limit, offset, categoryId, {
         colorId,
         sizeId,
         brandId,
-        categoryId,
         minPrice,
         maxPrice,
+        productType,
       });
-      return Promise.resolve(result);
+      return Promise.resolve({
+        products: result[0],
+        totalElements: result[1][0].totalElements,
+      });
     } catch (err) {
       throw err;
     }
@@ -65,7 +68,6 @@ class Product {
         category_id,
         product_id,
       } = productDetails;
-      console.log("bag id : ", bagId);
       const productImages = await this.getProductImages(productId);
       const productBrand = await this.getProductBrand(brand_id);
       const productManufacture = await this.getProductManufacture(
@@ -216,9 +218,6 @@ class Product {
         selectedColumns
       );
 
-      console.log(productId);
-
-      console.log(productDetailsRes);
       return Promise.resolve(productDetailsRes[0]);
     } catch (err) {
       throw err;
@@ -361,7 +360,6 @@ class Product {
   static isProductAddedToBag = async (productId, bagId) => {
     try {
       const item = bagItemDB.getBagItemByBagAndProductId(productId, bagId);
-      console.log(productId, bagId);
       return Promise.resolve(item);
     } catch (err) {
       throw err;
