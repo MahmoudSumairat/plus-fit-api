@@ -91,10 +91,11 @@ class User {
           message: EMAIL_PASSWORD_INCORRECT,
         });
       }
-      const token = jwt.sign({ ...result, bagId }, JWT_SECRET_KEY, {
+      const userData = { ...result, bagId };
+      const token = jwt.sign(userData, JWT_SECRET_KEY, {
         expiresIn: JWT_EXPIRE_DATE,
       });
-      return Promise.resolve(token);
+      return Promise.resolve({ token, userData });
     } catch (err) {
       throw err;
     }

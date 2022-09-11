@@ -4,6 +4,7 @@ const {
   getBagItems,
   updateBagItem,
   deleteBagItem,
+  getBagItemsCounts,
 } = require("../controllers/bagItems");
 const authToken = require("../middleware/authToken");
 const router = express.Router();
@@ -32,5 +33,6 @@ router.delete(
   validationCheck,
   deleteBagItem
 );
+router.get("/count", authToken, getBagItemsCounts);
 
 module.exports = router;

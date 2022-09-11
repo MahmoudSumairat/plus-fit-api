@@ -8,6 +8,7 @@ const {
 const handleResError = require("../helpers/errorHandler");
 const handleResSuccess = require("../helpers/successHandler");
 const Product = require("../models/Product");
+const parseToken = require("../helpers/parseToken");
 
 exports.addProduct = async ({ body }, res) => {
   try {
@@ -45,10 +46,15 @@ exports.getAllProducts = async ({ query, params: { productType } }, res) => {
   }
 };
 
-exports.getProductDetails = async ({ params }, res) => {
+exports.getProductDetails = async (
+  { params, headers: { authorization } },
+  res
+) => {
   try {
+    const userData = parseToken(authorization);
     const { productId } = params;
-    const result = await Product.getProductDetails(productId);
+    const bagId = userData ? userData.bagId : null;
+    const result = await Product.getProductDetails(productId, bagId);
     handleResSuccess(res, PRODUCT_DETAILS_FETCH_SUCCESS, result);
   } catch (err) {
     handleResError(err, res);

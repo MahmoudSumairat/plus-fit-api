@@ -69,7 +69,7 @@ const Color = {
       db.query(
         `
 
-        SELECT * FROM colors WHERE color_id > 0
+        SELECT title, color_id as id FROM colors WHERE color_id > 0
       
       `,
         (err, res) => queryHandler(err, res, resolve, reject)

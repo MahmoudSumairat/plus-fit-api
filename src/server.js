@@ -6,6 +6,9 @@ const router = require("./routes");
 const app = express();
 const PORT = process.env.PORT;
 const fileupload = require("express-fileupload");
+const cors = require("cors");
+
+app.use(cors({ origin: "http://localhost:3000" }));
 
 app.use(fileupload());
 

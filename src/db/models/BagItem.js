@@ -20,7 +20,19 @@ const BagItem = {
       db.query(
         `
             
-                SELECT * FROM bag_items WHERE bag_id = ${bagId}
+                SELECT
+                bag_items.size_id AS selectedSize,
+                bag_items.color_id AS selectedColor,
+                bag_items.bag_item_id as bagItemId,
+                bag_items.quantity,
+                bag_items.price,
+                images.url as imgUrl,
+                products.product_id as productId,
+                products.title
+                FROM bag_items RIGHT JOIN images
+                ON bag_items.product_id = images.product_id
+                RIGHT JOIN products ON products.product_id = bag_items.product_id
+                WHERE bag_items.bag_id = ${bagId} AND images.is_main_img = TRUE
             
             `,
         (err, res) => queryHandler(err, res, resolve, reject)
@@ -51,6 +63,37 @@ const BagItem = {
         
         `,
         updateValue,
+        (err, res) => queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
+
+  getBagItemByBagAndProductId: (productId, bagId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+      
+        SELECT * FROM bag_items WHERE product_id = ? AND bag_id = ?
+
+      
+      `,
+        [productId, bagId],
+        (err, res) => queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
+
+  getBagItemsCounts: (bagId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+      
+
+        SELECT COUNT(*) as count FROM bag_items WHERE bag_id = ?
+      
+      
+      `,
+        bagId,
         (err, res) => queryHandler(err, res, resolve, reject)
       );
     });

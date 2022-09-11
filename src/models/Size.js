@@ -41,6 +41,15 @@ class Size {
       throw err;
     }
   };
+
+  static getAllSizes = async () => {
+    try {
+      const sizes = sizeDB.getAllSizes();
+      return Promise.resolve(sizes);
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 module.exports = Size;

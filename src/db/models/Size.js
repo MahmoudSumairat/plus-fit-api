@@ -49,6 +49,19 @@ const Size = {
       );
     });
   },
+
+  getAllSizes: () => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+      
+        SELECT title, size_id as id FROM sizes 
+      
+      `,
+        (err, res) => queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
 };
 
 module.exports = Size;

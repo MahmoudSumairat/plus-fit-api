@@ -59,3 +59,14 @@ exports.deleteBagItem = async ({ params }, res) => {
     handleResError(err, res);
   }
 };
+
+exports.getBagItemsCounts = async ({ headers: { userData } }, res) => {
+  try {
+    const { bagId } = userData;
+
+    const count = await BagItem.getBagItemsCounts(bagId);
+    handleResSuccess(res, "bag items count fetched successfully", count);
+  } catch (err) {
+    handleResError(err, res);
+  }
+};

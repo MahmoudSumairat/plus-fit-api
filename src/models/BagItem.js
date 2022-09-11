@@ -1,6 +1,8 @@
 const { VALIDATION_ERROR } = require("../constants/statusCodes");
 const bagItemDB = require("../db/models/BagItem");
+const Color = require("./Color");
 const Product = require("./Product");
+const Size = require("./Size");
 
 class BagItem {
   bagItemData = {
@@ -21,7 +23,26 @@ class BagItem {
   static getBagItems = async (bagId) => {
     try {
       const result = await bagItemDB.getBagItems(bagId);
-      return Promise.resolve(result);
+      const itemsAsync = result.map(async (item) => {
+        const productSizes = await Size.getProductSizes(item.productId);
+        const productColors = await Color.getProductColors(item.productId);
+        return Promise.resolve({
+          ...item,
+          availableColors: productColors,
+          availableSizes: productSizes,
+        });
+      });
+      const items = await Promise.all(itemsAsync);
+      return Promise.resolve(items);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getBagItemsCounts = async (bagId) => {
+    try {
+      const [{ count }] = await bagItemDB.getBagItemsCounts(bagId);
+      return Promise.resolve(count);
     } catch (err) {
       throw err;
     }
@@ -86,9 +107,10 @@ class BagItem {
             status: VALIDATION_ERROR,
           });
         }
-        const { price } = await Product.selectFromProduct(productId, "price");
-        dbUpdateField += `, price = ?`;
-        dbUpdateValue = [updateValue, updateValue * price, id];
+        const product = await Product.selectFromProduct(productId, "price");
+        console.log(product);
+        // dbUpdateField += `, price = ?`;
+        // dbUpdateValue = [updateValue, updateValue * price, id];
       }
       await bagItemDB.updateBagItem(dbUpdateField, dbUpdateValue);
       return Promise.resolve(updateValue);
@@ -101,6 +123,15 @@ class BagItem {
     try {
       const productQuantity = await Product.getProductQuantity(productId);
       return Promise.resolve(bagItemQuantity <= productQuantity);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getBagItemByBagAndProductId = async (productId, bagId) => {
+    try {
+      const item = bagItemDB.getBagItemByBagAndProductId(productId, bagId);
+      return Promise.resolve(item);
     } catch (err) {
       throw err;
     }

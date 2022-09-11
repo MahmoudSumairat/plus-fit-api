@@ -2,6 +2,7 @@ const Color = require("./Color");
 const Size = require("./Size");
 const Brand = require("./Brand");
 const Category = require("./Category");
+const Overview = require("./Overview");
 const productDB = require("../db/models/Product");
 const imageDB = require("../db/models/Image");
 const productService = require("../services/product");
@@ -10,6 +11,8 @@ const getUpdateDataRow = require("../helpers/getUpdateDataRow");
 const Country = require("./Country");
 const Manufacture = require("./Manufacture");
 const Type = require("./Type");
+const reviewDB = require("../db/models/Review");
+const bagItemDB = require("../db/models/BagItem");
 
 class Product {
   productData = {
@@ -50,7 +53,7 @@ class Product {
     }
   };
 
-  static getProductDetails = async (productId) => {
+  static getProductDetails = async (productId, bagId) => {
     try {
       const result = await productDB.getProductDetails(productId);
       const productDetails = result[0];
@@ -62,7 +65,7 @@ class Product {
         category_id,
         product_id,
       } = productDetails;
-
+      console.log("bag id : ", bagId);
       const productImages = await this.getProductImages(productId);
       const productBrand = await this.getProductBrand(brand_id);
       const productManufacture = await this.getProductManufacture(
@@ -73,6 +76,14 @@ class Product {
       const productCategory = await this.getProductCategory(category_id);
       const productColors = await this.getProductColors(product_id);
       const productSizes = await this.getProductSizes(product_id);
+      const productOverview = await this.getProductOverview(product_id);
+      const productReviews = await this.getProductReviews(product_id);
+      let isProductAddedToBag = false;
+      let relatedBagItem = {};
+      if (bagId) {
+        relatedBagItem = await this.isProductAddedToBag(productId, bagId);
+        isProductAddedToBag = !!relatedBagItem[0];
+      }
       return Promise.resolve({
         ...productDetails,
         images: productImages,
@@ -83,6 +94,10 @@ class Product {
         category: productCategory,
         availableColors: productColors,
         availableSizes: productSizes,
+        overviews: productOverview,
+        reviews: productReviews,
+        isAddedToBag: isProductAddedToBag,
+        bagItemInfo: relatedBagItem[0],
       });
     } catch (err) {
       throw err;
@@ -200,6 +215,10 @@ class Product {
         productId,
         selectedColumns
       );
+
+      console.log(productId);
+
+      console.log(productDetailsRes);
       return Promise.resolve(productDetailsRes[0]);
     } catch (err) {
       throw err;
@@ -316,6 +335,34 @@ class Product {
       const { sizeIds, id } = this.productData;
       const result = await Size.updateProductSizes(sizeIds, id);
       return Promise.resolve(result);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getProductOverview = async (product_id) => {
+    try {
+      const productOverview = Overview.getProductOverview(product_id);
+      return Promise.resolve(productOverview);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static getProductReviews = async (product_id) => {
+    try {
+      const productReviews = await reviewDB.getProductReviews(product_id);
+      return Promise.resolve(productReviews);
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  static isProductAddedToBag = async (productId, bagId) => {
+    try {
+      const item = bagItemDB.getBagItemByBagAndProductId(productId, bagId);
+      console.log(productId, bagId);
+      return Promise.resolve(item);
     } catch (err) {
       throw err;
     }

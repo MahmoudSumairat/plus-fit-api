@@ -51,7 +51,7 @@ const Product = {
 
       db.query(
         `
-        SELECT products.product_id, products.title, products.price, products.rate, products.quantity, images.url as mainImgUrl FROM products
+        SELECT products.product_id, products.title, products.price, products.rate, products.quantity, images.url as mainImgUrl, products.rates_count FROM products
         RIGHT JOIN images ON products.product_id = images.product_id 
         ${colorFilter}
         ${sizeFilter}
@@ -70,6 +70,13 @@ const Product = {
 
   getProductDetails: (productId, selectedColumns) => {
     return new Promise((resolve, reject) => {
+      console.log(
+        format(`
+      SELECT ${
+        selectedColumns || "*"
+      } FROM products WHERE product_id=${productId};
+    `)
+      );
       db.query(
         `
           SELECT ${
@@ -112,6 +119,16 @@ const Product = {
 
   selectFromProduct: (productId, selectedColumns) => {
     return new Promise((resolve, reject) => {
+      console.log(
+        format(
+          `
+      
+      SELECT ${selectedColumns || "*"} FROM products WHERE product_id = ?
+    
+    `,
+          productId
+        )
+      );
       db.query(
         `
       
