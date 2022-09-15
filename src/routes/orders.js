@@ -5,6 +5,12 @@ const validationCheck = require("../middleware/validationCheck");
 const orderValidations = require("../validations/orders");
 const router = express.Router();
 
-router.post("/", authToken, orderValidations, validationCheck, createOrder);
+router.post(
+  "/",
+  authToken,
+  orderValidations.createOrder,
+  validationCheck,
+  createOrder
+);
 
 module.exports = router;

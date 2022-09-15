@@ -98,6 +98,20 @@ const BagItem = {
       );
     });
   },
+
+  emptyBag: (bagId) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `
+      
+        DELETE FROM bag_items WHERE bag_id = ?
+      
+      `,
+        bagId,
+        (err, res) => queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
 };
 
 module.exports = BagItem;

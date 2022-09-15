@@ -20,6 +20,14 @@ class BagItem {
     }
   }
 
+  static emptyBag = async (bagId) => {
+    try {
+      await bagItemDB.emptyBag(bagId);
+    } catch (err) {
+      throw err;
+    }
+  };
+
   static getBagItems = async (bagId) => {
     try {
       const result = await bagItemDB.getBagItems(bagId);

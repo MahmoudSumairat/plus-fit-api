@@ -1,3 +1,4 @@
+const BagItem = require("../db/models/BagItem");
 const handleResError = require("../helpers/errorHandler");
 const handleResSuccess = require("../helpers/successHandler");
 const Order = require("../models/Order");
@@ -7,7 +8,7 @@ exports.createOrder = async (
   {
     body: { rows },
     headers: {
-      userData: { user_id },
+      userData: { user_id, bagId },
     },
   },
   res
@@ -17,6 +18,7 @@ exports.createOrder = async (
     const orderId = await order.createOrder();
     const orderItem = new OrderItem({ rows, orderId });
     const result = await orderItem.addOrderItems();
+    await BagItem.emptyBag(bagId);
     handleResSuccess(res, "order has been created successfully.", result);
   } catch (err) {
     handleResError(err, res);
