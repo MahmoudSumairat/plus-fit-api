@@ -365,6 +365,15 @@ class Product {
       throw err;
     }
   };
+
+  static decreaseProductQuantities = async (productIds) => {
+    try {
+      await productDB.decreaseProductQuantities(productIds);
+      return Promise.resolve(productIds);
+    } catch (err) {
+      throw err;
+    }
+  };
 }
 
 module.exports = Product;

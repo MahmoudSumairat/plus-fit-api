@@ -126,6 +126,23 @@ const Product = {
       );
     });
   },
+
+  decreaseProductQuantities: (products) => {
+    return new Promise((resolve, reject) => {
+      let sql = "";
+      const targetProducts = [];
+
+      products.forEach((product) => {
+        sql += `UPDATE products SET quantity = quantity - ? WHERE product_id = ?;`;
+        targetProducts.push(product.quantity);
+        targetProducts.push(product.productId);
+      });
+
+      db.query(sql, targetProducts, (err, res) =>
+        queryHandler(err, res, resolve, reject)
+      );
+    });
+  },
 };
 
 module.exports = Product;

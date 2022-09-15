@@ -157,3 +157,28 @@ CREATE TABLE IF NOT EXISTS product_color_relations (
     FOREIGN KEY(color_id) REFERENCES colors(color_id),
     FOREIGN KEY(product_id) REFERENCES products(product_id)
 );
+
+
+CREATE TABLE IF NOT EXISTS orders (
+order_id INT NOT NULL AUTO_INCREMENT,
+user_id INT NOT NULL,
+PRIMARY KEY(order_id),
+FOREIGN KEY(user_id) REFERENCES users(user_id)
+);
+
+
+
+CREATE TABLE IF NOT EXISTS order_items (
+order_item_id INT NOT NULL AUTO_INCREMENT,
+product_id INT NOT NULL,
+price INT NOT NULL,
+quantity INT NOT NULL,
+color_id INT NOT NULL,
+size_id INT NOT NULL,
+order_id INT NOT NULL,
+PRIMARY KEY(order_item_id),
+FOREIGN KEY(product_id) REFERENCES products(product_id),
+FOREIGN KEY(color_id) REFERENCES colors(color_id),
+FOREIGN KEY(size_id) REFERENCES sizes(size_id),
+FOREIGN KEY(order_id) REFERENCES orders(order_id)
+)

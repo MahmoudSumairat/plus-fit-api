@@ -91,7 +91,8 @@ class User {
           message: EMAIL_PASSWORD_INCORRECT,
         });
       }
-      const userData = { ...result, bagId };
+      const { user_password, ...rest } = result;
+      const userData = { ...rest, bagId };
       const token = jwt.sign(userData, JWT_SECRET_KEY, {
         expiresIn: JWT_EXPIRE_DATE,
       });

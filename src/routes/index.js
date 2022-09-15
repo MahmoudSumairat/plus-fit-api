@@ -10,6 +10,8 @@ const addresses = require("./addresses");
 const overviews = require("./overviews");
 const reviews = require("./reviews");
 const sales = require("./sales");
+const orders = require("./orders");
+const visits = require("./visits");
 
 router.use("/auth", auth);
 router.use("/products", products);
@@ -19,4 +21,6 @@ router.use("/addresses", addresses);
 router.use("/overviews", overviews);
 router.use("/reviews", reviews);
 router.use("/sales", sales);
+router.use("/orders", orders);
+router.use("/visits", visits);
 module.exports = router;
