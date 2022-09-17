@@ -9,7 +9,7 @@ const fileupload = require("express-fileupload");
 const cors = require("cors");
 const { format } = require("mysql");
 
-app.use(cors({ origin: "https://plus-fit.herokuapp.com/" }));
+app.use(cors({ origin: "*" }));
 
 app.use(fileupload());
 
