@@ -181,4 +181,4 @@ FOREIGN KEY(product_id) REFERENCES products(product_id),
 FOREIGN KEY(color_id) REFERENCES colors(color_id),
 FOREIGN KEY(size_id) REFERENCES sizes(size_id),
 FOREIGN KEY(order_id) REFERENCES orders(order_id)
-)
+);
