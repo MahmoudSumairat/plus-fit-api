@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS overviews (
     overview_id INT NOT NULL AUTO_INCREMENT,
     content VARCHAR(255) NOT NULL,
     product_id INT NOT NULL,
-    PRIMARY KEY(overviews),
+    PRIMARY KEY(overview_id),
     FOREIGN KEY(product_id) REFERENCES products(product_id)
 );
 
